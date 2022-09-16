@@ -1,0 +1,10 @@
+﻿.idea
+.vs
+.vscode
+bin
+obj
+[Dd]ebug
+[Rr]elease
+[Tt]est[Rr]esults
+*.user
+*.DotSettings

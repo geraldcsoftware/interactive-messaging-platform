@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Api", "MessageInteractionService.Api\MessageInteractionService.Api.csproj", "{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Processor", "MessageInteractionService.Processor\MessageInteractionService.Processor.csproj", "{714CEC33-F0E7-433E-8D10-7E2563631074}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{714CEC33-F0E7-433E-8D10-7E2563631074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{714CEC33-F0E7-433E-8D10-7E2563631074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{714CEC33-F0E7-433E-8D10-7E2563631074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{714CEC33-F0E7-433E-8D10-7E2563631074}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
