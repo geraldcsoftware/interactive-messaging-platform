@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Processor", "MessageInteractionService.Processor\MessageInteractionService.Processor.csproj", "{714CEC33-F0E7-433E-8D10-7E2563631074}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Storage", "MessageInteractionService.Storage\MessageInteractionService.Storage.csproj", "{67F10A9A-83FB-4193-BF5B-86E72D019E80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Core", "MessageInteractionService.Core\MessageInteractionService.Core.csproj", "{536DD15A-90DA-4109-9A53-581011270951}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.IntegrationTests", "MessageInteractionService.IntegrationTests\MessageInteractionService.IntegrationTests.csproj", "{5C5119DD-EA20-418F-BD20-A85686EBD196}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{714CEC33-F0E7-433E-8D10-7E2563631074}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{714CEC33-F0E7-433E-8D10-7E2563631074}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{714CEC33-F0E7-433E-8D10-7E2563631074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67F10A9A-83FB-4193-BF5B-86E72D019E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67F10A9A-83FB-4193-BF5B-86E72D019E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67F10A9A-83FB-4193-BF5B-86E72D019E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67F10A9A-83FB-4193-BF5B-86E72D019E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{536DD15A-90DA-4109-9A53-581011270951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{536DD15A-90DA-4109-9A53-581011270951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{536DD15A-90DA-4109-9A53-581011270951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{536DD15A-90DA-4109-9A53-581011270951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C5119DD-EA20-418F-BD20-A85686EBD196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C5119DD-EA20-418F-BD20-A85686EBD196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C5119DD-EA20-418F-BD20-A85686EBD196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C5119DD-EA20-418F-BD20-A85686EBD196}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

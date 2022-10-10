@@ -1,13 +1,49 @@
-var builder = WebApplication.CreateBuilder(args);
+using FastEndpoints;
+using MessageInteractionService.Api.Mappings;
+using MessageInteractionService.Api.Services;
+using MessageInteractionService.Core;
+using MessageInteractionService.Storage;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Templates;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+const string logTemplate =
+    """
+    {@t:yyyy/MM/dd HH:mm:ss} [{@l} - {SourceContext}] {@m}
+    {#if IsDefined(@x)}{@x}
+    {#end}
+    """;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog((context, config) =>
+{
+    var expressionTemplate = new ExpressionTemplate(logTemplate);
+    config.ReadFrom.Configuration(context.Configuration, "Logging");
+    config.WriteTo.Console(expressionTemplate);
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddFastEndpoints();
+builder.Services.AddAutoMapper(config => { config.AddProfile<IncomingMessageProfile>(); });
+
+builder.Services.AddScoped<IMessageProcessor, MessageProcessor>()
+       .AddMessageInteractionCoreServices()
+       .AddMessageInteractionStorageServices(options =>
+        {
+            options.UseNpgsql(builder.Configuration
+                                     .GetConnectionString("StorageConnection"));
+        });
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MessagingDbContext>();
+    await dbContext.Database.EnsureCreatedAsync();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -15,30 +51,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
+app.UseFastEndpoints();
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
