@@ -20,6 +20,7 @@ public class SessionStore : ISessionStore
     {
         var sessionQuery = _dbContext.Sessions
                                      .AsNoTracking()
+                                     .Include(s => s.Sender)
                                      .Include(s => s.DataEntries)
                                      .Where(s => s.Sender != null && s.Sender.Key == sender && s.Sender.Enabled == true)
                                      .Where(s => s.Terminated == null)
@@ -72,6 +73,7 @@ public class SessionStore : ISessionStore
     public async Task<ISession> UpdateSession(ISession session)
     {
         var dbSession = await _dbContext.Sessions
+                                        .Include(s => s.Sender)
                                         .Include(s => s.DataEntries)
                                         .FirstOrDefaultAsync(s => s.Id == Guid.Parse(session.Id));
         if (dbSession is null) throw new InvalidOperationException("Session not found in database");

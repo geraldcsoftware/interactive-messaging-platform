@@ -9,9 +9,9 @@ namespace MessageInteractionService.IntegrationTests.EndpointTests;
 public class MessageEndpointTests
 
 {
-    private readonly DataSetupFixture _fixture;
+    private readonly SingleMenuItemDataFixture _fixture;
 
-    public MessageEndpointTests(DataSetupFixture fixture)
+    public MessageEndpointTests(SingleMenuItemDataFixture fixture)
     {
         _fixture = fixture;
     }

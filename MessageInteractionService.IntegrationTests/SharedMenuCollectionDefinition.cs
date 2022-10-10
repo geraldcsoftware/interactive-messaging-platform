@@ -1,8 +1,11 @@
 ﻿namespace MessageInteractionService.IntegrationTests;
 
 [CollectionDefinition("SharedMenu")]
+public class SharedMenuCollectionDefinition : ICollectionFixture<SingleMenuItemDataFixture>
+{
+}
 
-public class SharedMenuCollectionDefinition:  ICollectionFixture<DataSetupFixture>,
-                                              ICollectionFixture<ApplicationFactory>
+[CollectionDefinition("ExtendedMenuData")]
+public class ExtendedMenuDataCollectionDefinition : ICollectionFixture<ExtendedMenuTreeDataFixture>
 {
 }

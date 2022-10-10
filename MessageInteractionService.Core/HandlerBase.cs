@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using MessageInteractionService.Core.Input;
 
 namespace MessageInteractionService.Core;
 
@@ -28,51 +28,15 @@ public abstract class HandlerBase : IMessageHandler
     public abstract ISession Session { get; }
     public abstract Task<OutgoingMessage> Handle(IncomingMessage message);
 
-    public Input ParseInput(string input, InputType expectedType)
+    protected static InputBase ParseInput(string input, InputType expectedType)
     {
-        switch (expectedType)
+        return expectedType switch
         {
-            case InputType.ItemPosition:
-                return ParsePositionInput(input);
-            case InputType.Date:
-                return ParseDateInput(input);
-            default: return ParseTextInput(input);
-        }
-    }
-
-    private Input ParsePositionInput(string input)
-    {
-        var trimmed = input.Trim();
-        if (trimmed == "*") // next
-        {
-            return new Input
-            {
-                IsValid = true,
-                Value = trimmed,
-                Type = InputType.ItemPosition
-            };
-        }
-
-        var isValid = int.TryParse(trimmed, out var position);
-        return new Input
-        {
-            IsValid = isValid,
-            Value = trimmed, // todo: make Input generic, so that Value can be of different types. to avoid re-parsing
-            Type = InputType.ItemPosition
+            InputType.ItemPosition => new PositionInputValue(input.Trim()),
+            InputType.Date         => new DateInputValue(input.Trim()),
+            _                      => new RawTextInputValue(input.Trim())
         };
     }
-
-    private Input ParseDateInput(string input)
-    {
-        var isValid = DateTime.TryParseExact(input.AsSpan(),
-                                             "dd/MM/yyyy".AsSpan(),
-                                             CultureInfo.CurrentCulture,
-                                             DateTimeStyles.AdjustToUniversal,
-                                             out _);
-        return new() { Value = input, IsValid = isValid, Type = InputType.Text };
-    }
-
-    private Input ParseTextInput(string input) => new() { Value = input, IsValid = true, Type = InputType.Text };
-
+    
     protected Task UpdateSession() => SessionStore.UpdateSession(Session);
 }

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MessageInteractionService.Core.Input;
 
 namespace MessageInteractionService.Core.Menu;
 
@@ -24,8 +25,8 @@ public class MenuHandler : HandlerBase
         if (string.IsNullOrEmpty(message.Body))
             return InvalidInput();
 
-        var selectedPositionInput = ParseInput(message.Body, InputType.ItemPosition);
-        if (selectedPositionInput.IsValid)
+        var input = ParseInput(message.Body, InputType.ItemPosition);
+        if (input is not PositionInputValue { IsValid: true } selectedPositionInput)
         {
             return InvalidInput();
         }
@@ -34,11 +35,26 @@ public class MenuHandler : HandlerBase
         if (!hasMenuIdDefined || string.IsNullOrEmpty(previousMenuId))
         {
             var rootMenu = await _menuProvider.GetRootMenuElement();
-            return BuildMenuResponse(rootMenu);
+            var responseMsg =  BuildMenuResponse(rootMenu);
+            
+            Session.Data["CurrentMenuId"] = rootMenu.Id;
+            await UpdateSession();
+            return responseMsg;
+        }
+
+        if (selectedPositionInput.IsNavigation)
+        {
+            return new OutgoingMessage
+            {
+                Body = "Navigation is not supported yet",
+                Recipient = Session.Sender,
+                SessionId = Session.Id,
+                TimeSent = DateTimeProvider.UtcNow
+            };
         }
 
         var selectedMenu = await _menuProvider.GetChildMenu(previousMenuId,
-                                                            int.Parse(selectedPositionInput.Value));
+                                                            selectedPositionInput.Position);
 
         if (selectedMenu == null)
         {
@@ -65,7 +81,7 @@ public class MenuHandler : HandlerBase
             builder.Append($"{menuOption.DisplayPosition}. ");
             builder.AppendLine(menuOption.OptionText);
         }
-        
+
         var body = builder.ToString().Trim();
         return new OutgoingMessage
         {

@@ -2,11 +2,11 @@
 
 namespace MessageInteractionService.IntegrationTests;
 
-public class DataSetupFixture : IAsyncLifetime
+public class SingleMenuItemDataFixture : IAsyncLifetime
 {
     private readonly ApplicationFactory _factory;
 
-    public DataSetupFixture()
+    public SingleMenuItemDataFixture()
     {
         _factory = new ApplicationFactory();
     }
