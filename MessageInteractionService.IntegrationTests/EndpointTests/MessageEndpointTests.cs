@@ -5,55 +5,30 @@ using FluentAssertions;
 
 namespace MessageInteractionService.IntegrationTests.EndpointTests;
 
-public class MessageEndpointTests : IClassFixture<ApplicationFactory>
-{
-    private readonly ApplicationFactory _factory;
+[Collection("SharedMenu")]
+public class MessageEndpointTests
 
-    public MessageEndpointTests(ApplicationFactory factory)
+{
+    private readonly DataSetupFixture _fixture;
+
+    public MessageEndpointTests(DataSetupFixture fixture)
     {
-        _factory = factory;
+        _fixture = fixture;
     }
 
     [Fact]
     public async Task WhenNewUserSendsMessage_ShouldGetRootMenuContent()
     {
         // Arrange
-        var connectionString = _factory.GetConnectionString();
-
-        await using (var connection = new Npgsql.NpgsqlConnection(connectionString))
-        {
-            var rootMenu = new
-            {
-                Id = Guid.NewGuid(),
-                ParentMenuId = (Guid?)null,
-                DisplayText = "Welcome to my test",
-                OptionText = (string?)null, 
-                DisplayOrder = -1, 
-                HandlerName = (string?)null
-            };
-            var childMenu = new
-            {
-                Id = Guid.NewGuid(),
-                ParentMenuId = rootMenu.Id,
-                DisplayText = "First option",
-                OptionText = "First option", 
-                DisplayOrder = 1, 
-                HandlerName = (string?)null
-            };
-            await connection.OpenAsync();
-            await connection.ExecuteAsync(DbCommands.InsertMenuCommand, rootMenu);
-            await connection.ExecuteAsync(DbCommands.InsertMenuCommand, childMenu);
-        }
-
-        var client = _factory.CreateClient();
+        var client = _fixture.Factory.CreateClient();
         const string url = "api/messages";
         var body = $$"""
             {
                 "body": "#",
                 "sender": "testSender",
-                "sent": "{{ DateTimeOffset.UtcNow:o}}"
+                "sent": "{{DateTimeOffset.UtcNow:o}}"
             }    
-        """;
+        """ ;
         var content = new StringContent(body, Encoding.UTF8, "application/json");
 
         // Act
@@ -73,5 +48,45 @@ public class MessageEndpointTests : IClassFixture<ApplicationFactory>
                     .GetString()
                     .Should()
                     .BeEquivalentTo(expected);
+    }
+
+    [Fact]
+    public async Task WhenNewUserSendsMessage_ShouldCreateSenderAnsStartSession()
+    {
+        // Arrange
+        var client = _fixture.Factory.CreateClient();
+        const string url = "api/messages";
+        var body = $$"""
+            {
+                "body": "#",
+                "sender": "testSender2",
+                "sent": "{{DateTimeOffset.UtcNow:o}}"
+            }    
+        """ ;
+        var content = new StringContent(body, Encoding.UTF8, "application/json");
+
+        // Act
+        var response = await client.PostAsync(url, content);
+
+        // Assert
+        response.IsSuccessStatusCode.Should().BeTrue();
+
+        await using var sqlConnection = new Npgsql.NpgsqlConnection(_fixture.Factory.GetConnectionString());
+        const string sendersQuery = """
+            SELECT COUNT(*) FROM "Senders" WHERE "Key" = @sender 
+            """;
+            
+        const string sessionQuery = """
+            SELECT COUNT(*) FROM "Sessions" JOIN "Senders" 
+            ON "Sessions"."SenderId" = "Senders"."Id"
+             WHERE "Senders"."Key" = @sender 
+            """;
+        await sqlConnection.OpenAsync();
+        var sendersCount = await sqlConnection.ExecuteScalarAsync<int>(sendersQuery, new { @sender = "testSender2" });
+        var sessionsCount = await sqlConnection.ExecuteScalarAsync<int>(sessionQuery, new { @sender = "testSender2" });
+        await sqlConnection.CloseAsync();
+
+        sendersCount.Should().Be(1);
+        sessionsCount.Should().Be(1);
     }
 }
