@@ -2,15 +2,16 @@
 
 public class MenuElement
 {
-    public string HeaderText { get; set; }
-    public string Id { get; set; }
-    public IReadOnlyCollection<MenuOption> Options { get; set; }
+    public required string HeaderText { get; set; }
+    public required string Id { get; set; }
+    public required IReadOnlyCollection<MenuOption> Options { get; set; } = new List<MenuOption>();
+    public string? HandlerName { get; set; }
 }
 
 public class MenuOption
 {
-    public string Id { get; set; }
-    public string ParentId { get; set; }
-    public string OptionText { get; set; }
-    public int DisplayPosition { get; set; }
+    public required string Id { get; set; }
+    public required string ParentId { get; set; }
+    public required string OptionText { get; set; }
+    public required int DisplayPosition { get; set; }
 }

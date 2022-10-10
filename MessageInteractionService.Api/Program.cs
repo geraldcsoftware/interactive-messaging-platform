@@ -25,7 +25,11 @@ builder.Host.UseSerilog((context, config) =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddFastEndpoints();
-builder.Services.AddAutoMapper(config => { config.AddProfile<IncomingMessageProfile>(); });
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile<IncomingMessageProfile>();
+    config.AddProfile<OutgoingMessageProfile>();
+});
 
 builder.Services.AddScoped<IMessageProcessor, MessageProcessor>()
        .AddMessageInteractionCoreServices()

@@ -30,7 +30,14 @@ public class MenuHandler : HandlerBase
             return InvalidInput();
         }
 
-        var selectedMenu = await _menuProvider.GetChildMenu(Session.Data["CurrentMenuId"],
+        var hasMenuIdDefined = Session.Data.TryGetValue("CurrentMenuId", out var previousMenuId);
+        if (!hasMenuIdDefined || string.IsNullOrEmpty(previousMenuId))
+        {
+            var rootMenu = await _menuProvider.GetRootMenuElement();
+            return BuildMenuResponse(rootMenu);
+        }
+
+        var selectedMenu = await _menuProvider.GetChildMenu(previousMenuId,
                                                             int.Parse(selectedPositionInput.Value));
 
         if (selectedMenu == null)
@@ -58,8 +65,8 @@ public class MenuHandler : HandlerBase
             builder.Append($"{menuOption.DisplayPosition}. ");
             builder.AppendLine(menuOption.OptionText);
         }
-
-        var body = builder.ToString();
+        
+        var body = builder.ToString().Trim();
         return new OutgoingMessage
         {
             SessionId = Session.Id,

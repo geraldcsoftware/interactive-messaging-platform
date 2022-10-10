@@ -1,4 +1,5 @@
 ﻿using MessageInteractionService.Core;
+using MessageInteractionService.Core.Menu;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ public static class StorageServicesRegistrationExtensions
         ArgumentNullException.ThrowIfNull(services);
 
         services.AddScoped<ISessionStore, SessionStore>();
+        services.AddScoped<IMenuProvider, DbMenuProvider>();
         services.AddDbContext<MessagingDbContext>(configureDbOptions);
     }
 }
