@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Api", "MessageInteractionService.Api\MessageInteractionService.Api.csproj", "{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Processor", "MessageInteractionService.Processor\MessageInteractionService.Processor.csproj", "{714CEC33-F0E7-433E-8D10-7E2563631074}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Storage", "MessageInteractionService.Storage\MessageInteractionService.Storage.csproj", "{67F10A9A-83FB-4193-BF5B-86E72D019E80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Core", "MessageInteractionService.Core\MessageInteractionService.Core.csproj", "{536DD15A-90DA-4109-9A53-581011270951}"
@@ -26,10 +24,6 @@ Global
 		{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF9EE9A0-C73B-4D41-9E95-959032F98BAD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{714CEC33-F0E7-433E-8D10-7E2563631074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{714CEC33-F0E7-433E-8D10-7E2563631074}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{714CEC33-F0E7-433E-8D10-7E2563631074}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{714CEC33-F0E7-433E-8D10-7E2563631074}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67F10A9A-83FB-4193-BF5B-86E72D019E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{67F10A9A-83FB-4193-BF5B-86E72D019E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67F10A9A-83FB-4193-BF5B-86E72D019E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
