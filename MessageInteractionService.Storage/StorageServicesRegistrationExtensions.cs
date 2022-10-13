@@ -15,6 +15,7 @@ public static class StorageServicesRegistrationExtensions
 
         services.AddScoped<ISessionStore, SessionStore>();
         services.AddScoped<IMenuProvider, DbMenuProvider>();
+        services.AddScoped<IMessageLogger, DbMessageLogger>();
         services.AddDbContext<MessagingDbContext>(configureDbOptions);
     }
 }

@@ -13,7 +13,8 @@ public class MessagingDbContext : DbContext
     public DbSet<MessageSender> Senders => Set<MessageSender>();
     public DbSet<SessionDataEntry> SessionDataEntries => Set<SessionDataEntry>();
     public DbSet<MenuDefinition> MenuDefinitions => Set<MenuDefinition>();
-
+    public DbSet<MessageLog> MessageLogs => Set<MessageLog>();
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
