@@ -52,7 +52,8 @@ public class MenuHandler : HandlerBase
                 Body = "Navigation is not supported yet",
                 Recipient = Session.Sender,
                 SessionId = Session.Id,
-                TimeSent = DateTimeProvider.UtcNow
+                TimeSent = DateTimeProvider.UtcNow,
+                TerminateSession = true
             };
         }
 
@@ -106,7 +107,8 @@ public class MenuHandler : HandlerBase
             SessionId = Session.Id,
             TimeSent = DateTimeProvider.UtcNow,
             Recipient = Session.Sender,
-            Body = body
+            Body = body,
+            TerminateSession = false
         };
     }
 }

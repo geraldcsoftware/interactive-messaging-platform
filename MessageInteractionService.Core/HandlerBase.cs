@@ -21,7 +21,8 @@ public abstract class HandlerBase : IMessageHandler
             SessionId = Session.Id,
             Recipient = Session.Sender,
             TimeSent = DateTimeProvider.UtcNow,
-            Body = "Invalid input, please try again."
+            Body = "Invalid input, please try again.",
+            TerminateSession = false
         };
     }
 
@@ -39,15 +40,4 @@ public abstract class HandlerBase : IMessageHandler
     }
     
     protected Task UpdateSession() => SessionStore.UpdateSession(Session);
-
-    protected virtual OutgoingMessage RequestFieldResponse(string promptMessage)
-    {
-        return new OutgoingMessage
-        {
-            Body = promptMessage,
-            Recipient = Session.Sender,
-            SessionId = Session.Id,
-            TimeSent = DateTimeProvider.UtcNow
-        };
-    }
 }

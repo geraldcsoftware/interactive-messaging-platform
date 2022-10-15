@@ -8,7 +8,8 @@ public class SessionFactory : ISessionFactory
     {
         _sessionStore = sessionStore;
     }
-
+    ISessionStore ISessionFactory.SessionStore => _sessionStore;
+    
     public async Task<ISession> GetOrCreateSession(IncomingMessage message)
     {
         var session = await _sessionStore.GetSenderCurrentActiveSession(message.Sender);

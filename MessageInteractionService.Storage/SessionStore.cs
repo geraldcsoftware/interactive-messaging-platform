@@ -104,4 +104,14 @@ public class SessionStore : ISessionStore
                                     dbSession.Start,
                                     dataDictionary);
     }
+
+    public async Task TerminateSession(ISession session)
+    {
+        var dbSession = await _dbContext.Sessions
+                                        .FirstOrDefaultAsync(s => s.Id == Guid.Parse(session.Id));
+        if (dbSession is null) throw new InvalidOperationException("Session not found in database");
+
+        dbSession.Terminated = _dateTimeProvider.UtcNow;
+        await _dbContext.SaveChangesAsync();
+    }
 }

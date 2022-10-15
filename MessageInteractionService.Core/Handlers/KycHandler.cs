@@ -49,7 +49,8 @@ public class KycHandler : HandlerBase
             """,
             Recipient = Session.Sender,
             SessionId = Session.Id,
-            TimeSent = DateTimeProvider.UtcNow
+            TimeSent = DateTimeProvider.UtcNow,
+            TerminateSession = true
         };
     }
 }

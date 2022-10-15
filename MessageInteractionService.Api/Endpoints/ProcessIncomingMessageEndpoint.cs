@@ -1,7 +1,8 @@
 ﻿using FastEndpoints;
 using MessageInteractionService.Api.Endpoints.Models;
-using MessageInteractionService.Api.Services;
+using MessageInteractionService.Core;
 using IMapper = AutoMapper.IMapper;
+using IncomingMessage = MessageInteractionService.Api.Endpoints.Models.IncomingMessage;
 
 namespace MessageInteractionService.Api.Endpoints;
 

@@ -1,6 +1,4 @@
-﻿using MessageInteractionService.Core;
-
-namespace MessageInteractionService.Api.Services;
+﻿namespace MessageInteractionService.Core;
 
 public interface IMessageProcessor
 {

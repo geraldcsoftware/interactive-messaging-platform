@@ -124,6 +124,18 @@ public class MenuNavigationTests
         firstNamePromptResponse.Should().BeEquivalentTo(expectedResponse3);
         lastNamePromptResponse.Should().BeEquivalentTo(expectedResponse4);
         summaryResponse.Should().BeEquivalentTo(expectedResponse5);
+
+        await using var connection = new Npgsql.NpgsqlConnection(_fixture.Factory.GetConnectionString());
+        await connection.OpenAsync();
+
+        const string terminatedSessionQuery = """"
+        SELECT ("Terminated" IS NOT NULL) AS "Terminated" FROM "Sessions" 
+        INNER JOIN "Senders" "S" on "S"."Id" = "Sessions"."SenderId" 
+         where "S"."Key" = @key
+        """";
+
+        var terminated = await connection.ExecuteScalarAsync<bool>(terminatedSessionQuery, new { @key = sender });
+        terminated.Should().BeTrue();
     }
 
 }

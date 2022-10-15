@@ -1,6 +1,5 @@
 using FastEndpoints;
 using MessageInteractionService.Api.Mappings;
-using MessageInteractionService.Api.Services;
 using MessageInteractionService.Core;
 using MessageInteractionService.Storage;
 using Microsoft.EntityFrameworkCore;

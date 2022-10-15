@@ -68,7 +68,8 @@ public class SessionFieldStore : ISessionFieldStore
             Body = promptMessage,
             Recipient = _session.Sender,
             SessionId = _session.Id,
-            TimeSent = _dateTimeProvider.UtcNow
+            TimeSent = _dateTimeProvider.UtcNow,
+            TerminateSession = false
         };
     }
 }

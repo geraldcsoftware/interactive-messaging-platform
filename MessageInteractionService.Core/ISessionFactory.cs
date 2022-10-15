@@ -3,6 +3,7 @@
 public interface ISessionFactory
 {
     Task<ISession> GetOrCreateSession(IncomingMessage message);
+    ISessionStore SessionStore { get; }
 }
 
 public interface IHandlerFactory
