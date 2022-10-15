@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.IntegrationTests", "MessageInteractionService.IntegrationTests\MessageInteractionService.IntegrationTests.csproj", "{5C5119DD-EA20-418F-BD20-A85686EBD196}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageInteractionService.Console", "MessageInteractionService.Console\MessageInteractionService.Console.csproj", "{2751457D-D588-48B8-B542-BCFCAE2B8E31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{5C5119DD-EA20-418F-BD20-A85686EBD196}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C5119DD-EA20-418F-BD20-A85686EBD196}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C5119DD-EA20-418F-BD20-A85686EBD196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2751457D-D588-48B8-B542-BCFCAE2B8E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2751457D-D588-48B8-B542-BCFCAE2B8E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2751457D-D588-48B8-B542-BCFCAE2B8E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2751457D-D588-48B8-B542-BCFCAE2B8E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

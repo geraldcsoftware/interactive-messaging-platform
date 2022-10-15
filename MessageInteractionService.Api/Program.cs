@@ -30,14 +30,11 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<OutgoingMessageProfile>();
 });
 
-builder.Services.AddScoped<IMessageProcessor, MessageProcessor>()
-       .AddMessageInteractionCoreServices()
+builder.Services.AddMessageInteractionCoreServices()
        .AddMessageInteractionStorageServices(options =>
         {
-            options.UseNpgsql(builder.Configuration
-                                     .GetConnectionString("StorageConnection"));
+            options.UseNpgsql(builder.Configuration.GetConnectionString("StorageConnection"));
         });
-
 
 var app = builder.Build();
 

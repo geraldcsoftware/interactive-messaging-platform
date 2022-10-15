@@ -8,7 +8,8 @@ public static class ServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddScoped<IHandlerFactory, HandlerFactory>()
+        services.AddScoped<IMessageProcessor, MessageProcessor>()
+                .AddScoped<IHandlerFactory, HandlerFactory>()
                 .AddScoped<ISessionFactory, SessionFactory>()
                 .AddTransient<IDateTimeProvider, Clock>();
 

@@ -11,6 +11,7 @@ public class OutgoingMessageProfile: Profile
                 Endpoints.Models.MessageResponse>()
            .ForMember(d => d.Content, o => o.MapFrom(s => s.Body))
            .ForMember(d => d.Time, o => o.MapFrom(s => s.TimeSent))
-           .ForMember(d => d.To, o => o.MapFrom(s => s.Recipient));
+           .ForMember(d => d.To, o => o.MapFrom(s => s.Recipient))
+           .ForMember(d => d.Terminal, o => o.MapFrom(s => s.TerminateSession));
     }
 }

@@ -1,18 +1,23 @@
-﻿namespace MessageInteractionService.Core;
+﻿using Microsoft.Extensions.Logging;
+
+namespace MessageInteractionService.Core;
 
 public class MessageProcessor : IMessageProcessor
 {
     private readonly ISessionFactory _sessionFactory;
     private readonly IHandlerFactory _handlerFactory;
     private readonly IMessageLogger _messageLogger;
+    private readonly ILogger<MessageProcessor> _logger;
 
     public MessageProcessor(ISessionFactory sessionFactory,
                             IHandlerFactory handlerFactory,
-                            IMessageLogger messageLogger)
+                            IMessageLogger messageLogger,
+                            ILogger<MessageProcessor> logger)
     {
         _sessionFactory = sessionFactory;
         _handlerFactory = handlerFactory;
         _messageLogger = messageLogger;
+        _logger = logger;
     }
 
     public async Task<OutgoingMessage> ProcessMessage(IncomingMessage message)
@@ -35,8 +40,9 @@ public class MessageProcessor : IMessageProcessor
             await _messageLogger.LogMessage(responseMessage, session);
             return responseMessage;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Error processing message");
             var session = await _sessionFactory.SessionStore.GetSenderCurrentActiveSession(message.Sender);
             if (session is { })
                 await _sessionFactory.SessionStore.TerminateSession(session);
