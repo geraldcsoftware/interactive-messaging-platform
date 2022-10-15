@@ -39,4 +39,15 @@ public abstract class HandlerBase : IMessageHandler
     }
     
     protected Task UpdateSession() => SessionStore.UpdateSession(Session);
+
+    protected virtual OutgoingMessage RequestFieldResponse(string promptMessage)
+    {
+        return new OutgoingMessage
+        {
+            Body = promptMessage,
+            Recipient = Session.Sender,
+            SessionId = Session.Id,
+            TimeSent = DateTimeProvider.UtcNow
+        };
+    }
 }

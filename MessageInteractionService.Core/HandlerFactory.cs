@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using MessageInteractionService.Core.Fields;
+using MessageInteractionService.Core.Handlers;
 using MessageInteractionService.Core.Menu;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +22,7 @@ public class HandlerFactory : IHandlerFactory
         var hasHandlerDefined = session.Data.TryGetValue("Handler", out var currentHandler)
                                 && !string.IsNullOrEmpty(currentHandler);
 
-        return Task.FromResult(hasHandlerDefined ? GetHandler(currentHandler) : GetMenuHandler(session));
+        return Task.FromResult(hasHandlerDefined ? GetHandler(currentHandler, session) : GetMenuHandler(session));
     }
 
     private IMessageHandler GetMenuHandler(ISession session)
@@ -29,18 +31,28 @@ public class HandlerFactory : IHandlerFactory
         return handler;
     }
 
-    private IMessageHandler GetHandler(string? handlerName)
+    private IMessageHandler GetHandler(string? handlerName, ISession session)
     {
         ArgumentException.ThrowIfNullOrEmpty(handlerName);
-        var type = Assembly.GetAssembly(GetType())?.GetType(handlerName);
-
+        var type = ResolveFromKnownType(handlerName) ?? Assembly.GetAssembly(GetType())?.GetType(handlerName);
+        
         if (type == null)
             throw new ArgumentException($"'{handlerName}' is an unknown type.", nameof(handlerName));
 
-        if (type.IsAssignableTo(typeof(IMessageHandler)))
+        if (!type.IsAssignableTo(typeof(IMessageHandler)))
             throw new InvalidOperationException($"Type '{handlerName}' is not assignable to IMessageHandler.");
 
-        var handler = ActivatorUtilities.CreateInstance(_serviceProvider, type);
+        ISessionFieldStore sessionFieldStore = ActivatorUtilities.CreateInstance<SessionFieldStore>(_serviceProvider, session);
+        var handler = ActivatorUtilities.CreateInstance(_serviceProvider, type, session, sessionFieldStore);
         return (IMessageHandler)handler;
+    }
+
+    private static Type? ResolveFromKnownType(string typeName)
+    {
+        return typeName switch
+        {
+            nameof(KycHandler) => typeof(KycHandler),
+            _                  => null
+        };
     }
 }

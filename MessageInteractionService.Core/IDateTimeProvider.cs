@@ -7,5 +7,5 @@ public interface IDateTimeProvider
 
 public class Clock: IDateTimeProvider
 {
-    public DateTimeOffset UtcNow => global::System.DateTimeOffset.UtcNow;
+    public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
 }

@@ -72,7 +72,7 @@ public class MenuNavigationTests
        await using var connection = new Npgsql.NpgsqlConnection(_fixture.Factory.GetConnectionString());
        await connection.OpenAsync();
 
-       var messages = await connection.QueryAsync<(string Body, string MessageDirection)>(messagesQuery, new { sender });
+       var messages = (await connection.QueryAsync<(string Body, string MessageDirection)>(messagesQuery, new { sender })).ToList();
 
        messages.Should().HaveCount(4);
        messages.Where(m => m.MessageDirection == "OUTGOING").Should().HaveCount(2);
@@ -81,4 +81,49 @@ public class MenuNavigationTests
        messages.Where(m => m.Body == expectedResponse2).Should().HaveCount(1);
        
     }
+    
+    [Fact]
+    public async Task WhenNavigatingToChildHandler_ShouldInvokeHandler()
+    {
+        //Arrange
+        var client = _fixture.Factory.CreateClient();
+        var sender = new Bogus.Faker().Person.Email;
+
+        // Act
+        var menuResponse = await client.SendRequest("#", sender);
+        var firstItemResponse = await client.SendRequest("2", sender);
+        var firstNamePromptResponse = await client.SendRequest("3", sender);
+        var lastNamePromptResponse = await client.SendRequest("Gerald", sender);
+        var summaryResponse = await client.SendRequest("Chifanzwa", sender);
+        
+        // Assert
+        const string expectedResponse1 = """ 
+        Welcome to my tests
+        1. Debug Test
+        2. Run Test
+        """;
+        const string expectedResponse2 = """
+        Choose speed
+        1. Run Once
+        2. Run continuous
+        3. Run and break
+        """;
+        const string expectedResponse3 = """
+        Enter your first name
+        """;
+        const string expectedResponse4 = """
+        Enter your last name
+        """;
+        const string expectedResponse5 = """
+            Thank you Gerald Chifanzwa,
+            Have a nice day!
+            """;
+                     
+        menuResponse.Should().BeEquivalentTo(expectedResponse1);
+        firstItemResponse.Should().BeEquivalentTo(expectedResponse2);
+        firstNamePromptResponse.Should().BeEquivalentTo(expectedResponse3);
+        lastNamePromptResponse.Should().BeEquivalentTo(expectedResponse4);
+        summaryResponse.Should().BeEquivalentTo(expectedResponse5);
+    }
+
 }

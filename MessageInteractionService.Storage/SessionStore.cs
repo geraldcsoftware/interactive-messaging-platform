@@ -52,7 +52,7 @@ public class SessionStore : ISessionStore
             Updated = null
         };
 
-        var session = new DbModels.Session
+        var session = new Session
         {
             Id = Guid.NewGuid(),
             Start = _dateTimeProvider.UtcNow,

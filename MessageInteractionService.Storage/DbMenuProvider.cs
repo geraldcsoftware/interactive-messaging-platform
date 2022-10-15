@@ -36,19 +36,20 @@ public class DbMenuProvider : IMenuProvider
     public async Task<MenuElement?> GetChildMenu(string parentMenuId, int position)
     {
         var parentId = Guid.Parse(parentMenuId);
-        var rootMenuDefinition = await _dbContext.MenuDefinitions
+        var menuDefinition = await _dbContext.MenuDefinitions
                                                  .Where(m => m.ParentMenuId == parentId)
                                                  .Where(m => m.DisplayOrder == position)
                                                  .FirstOrDefaultAsync();
 
-        if (rootMenuDefinition == null)
+        if (menuDefinition == null)
             return null;
 
         var menu = new MenuElement
         {
-            Id = rootMenuDefinition.Id.ToString("N"),
-            HeaderText = rootMenuDefinition.DisplayText ?? string.Empty,
-            Options = await GetSubOptions(rootMenuDefinition.Id)
+            Id = menuDefinition.Id.ToString("N"),
+            HeaderText = menuDefinition.DisplayText ?? string.Empty,
+            Options = await GetSubOptions(menuDefinition.Id),
+            HandlerName = menuDefinition.HandlerName
         };
         return menu;
     }

@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dapper;
 
 namespace MessageInteractionService.IntegrationTests;
 
@@ -49,54 +50,91 @@ public class ExtendedMenuTreeDataFixture : IAsyncLifetime
         {
             new()
             {
-                Id = id1, DisplayText = "Welcome to my tests", OptionText = string.Empty, DisplayOrder = -1,
-                HandlerName = null, ParentMenuId = null
+                Id = id1, 
+                DisplayText = "Welcome to my tests", 
+                OptionText = string.Empty,
+                DisplayOrder = -1,
+                HandlerName = null, 
+                ParentMenuId = null
             },
             new()
             {
-                Id = id2, DisplayText = "Select environment", OptionText = "Debug Test", DisplayOrder = 1,
-                HandlerName = null, ParentMenuId = id1
-            },
-            new()
-            {
-                Id = id3, DisplayText = "Choose speed", OptionText = "Run Test", DisplayOrder = 2, HandlerName = null,
+                Id = id2, 
+                DisplayText = "Select environment",
+                OptionText = "Debug Test", 
+                DisplayOrder = 1,
+                HandlerName = null, 
                 ParentMenuId = id1
             },
             new()
             {
-                Id = id4, DisplayText = "Environment 1", OptionText = "Development", DisplayOrder = 1,
-                HandlerName = null, ParentMenuId = id2
+                Id = id3,
+                DisplayText = "Choose speed",
+                OptionText = "Run Test",
+                DisplayOrder = 2,
+                HandlerName = null,
+                ParentMenuId = id1
             },
             new()
             {
-                Id = id5, DisplayText = "Environment 2", OptionText = "Staging", DisplayOrder = 2, HandlerName = null,
+                Id = id4,
+                DisplayText = "Environment 1", 
+                OptionText = "Development", 
+                DisplayOrder = 1,
+                HandlerName = null,
                 ParentMenuId = id2
             },
             new()
             {
-                Id = id6, DisplayText = "Environment 3", OptionText = "Production", DisplayOrder = 3,
-                HandlerName = null, ParentMenuId = id2
+                Id = id5,
+                DisplayText = "Environment 2",
+                OptionText = "Staging", 
+                DisplayOrder = 2, 
+                HandlerName = null,
+                ParentMenuId = id2
+            },
+            new()
+            {
+                Id = id6, 
+                DisplayText = "Environment 3",
+                OptionText = "Production", 
+                DisplayOrder = 3,
+                HandlerName = null, 
+                ParentMenuId = id2
             },
 
             new()
             {
-                Id = id7, DisplayText = "Context 1", OptionText = "Run Once", DisplayOrder = 1, HandlerName = null,
+                Id = id7, 
+                DisplayText = "Context 1",
+                OptionText = "Run Once",
+                DisplayOrder = 1,
+                HandlerName = null,
                 ParentMenuId = id3
             },
             new()
             {
-                Id = id8, DisplayText = "Context 2", OptionText = "Run continuous", DisplayOrder = 2,
-                HandlerName = null, ParentMenuId = id3
+                Id = id8, 
+                DisplayText = "Context 2",
+                OptionText = "Run continuous",
+                DisplayOrder = 2,
+                HandlerName = null,
+                ParentMenuId = id3
             },
             new()
             {
-                Id = id9, DisplayText = "Context 3", OptionText = "Run and break", DisplayOrder = 3, HandlerName = null,
+                Id = id9, 
+                DisplayText = "Context 3", 
+                OptionText = "Run and break", 
+                DisplayOrder = 3, 
+                HandlerName = "KycHandler",
                 ParentMenuId = id3
             }
         };
     }
 
 
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     private class InsertMenuArgument
     {
         public required Guid Id { get; set; }
