@@ -79,6 +79,7 @@ public class SessionStore : ISessionStore
                                         .FirstOrDefaultAsync(s => s.Id == Guid.Parse(session.Id));
         if (dbSession is null) throw new InvalidOperationException("Session not found in database");
 
+        
         foreach (var (key, value) in session.Data)
         {
             var dataEntry = dbSession.DataEntries
@@ -86,6 +87,7 @@ public class SessionStore : ISessionStore
                                                                         StringComparison.OrdinalIgnoreCase));
             if (dataEntry is not null)
             {
+                if (dataEntry.Value == value) continue;
                 dataEntry = dataEntry with { Value = value };
                 _dbContext.Update(dataEntry);
             }
@@ -93,6 +95,7 @@ public class SessionStore : ISessionStore
             {
                 dataEntry = new SessionDataEntry(Guid.NewGuid(), dbSession.Id, key, value);
                 dbSession.DataEntries.Add(dataEntry);
+                _dbContext.Add(dataEntry);
             }
         }
 
