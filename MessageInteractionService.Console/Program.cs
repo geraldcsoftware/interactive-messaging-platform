@@ -39,12 +39,16 @@ async Task BeginSession(MessagingApiClient client)
                       $"Type what you be expecting to send to the service to start.\n\n");
 
     var terminate = false;
-    var response = string.Empty;
     while (terminate == false)
     {
         var content = Console.ReadLine();
+        while (string.IsNullOrWhiteSpace(content))
+        {
+            Console.WriteLine("Enter a non-empty string");
+            content = Console.ReadLine();
+        }
         Console.WriteLine("..............................................................");
-        (response, terminate) = await client.SendRequest(content, senderId);
+        (var response, terminate) = await client.SendRequest(content, senderId);
 
         Console.WriteLine(response);
         Console.WriteLine("==============================================================\n");

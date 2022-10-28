@@ -19,9 +19,9 @@ public class FieldRequestResult
 
     public  T GetValue<T>() where T: IParsable<T>
     {
-        if (T.TryParse(RawValue, CultureInfo.InvariantCulture , out T value)) return value;
+        if (T.TryParse(RawValue, CultureInfo.InvariantCulture , out T? value)) return value;
 
-        throw FieldValueFormatException.New(RawValue, typeof(T));
+        throw FieldValueFormatException.New(RawValue!, typeof(T));
     }
 }
 

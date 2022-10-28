@@ -29,7 +29,7 @@ public class SessionStore : ISessionStore
         var session = await sessionQuery.FirstOrDefaultAsync();
         if (session == null) return null;
 
-        var dataDictionary = session.DataEntries.ToDictionary(d => d.Key!, d => d.Value!);
+        var dataDictionary = session.DataEntries.ToDictionary(d => d.Key, d => d.Value);
         return new MessagingSession(
                                     session.Id.ToString("N"),
                                     session.Sender!.Key!,
@@ -73,6 +73,7 @@ public class SessionStore : ISessionStore
     public async Task<ISession> UpdateSession(ISession session)
     {
         var dbSession = await _dbContext.Sessions
+                                        .AsNoTracking()
                                         .Include(s => s.Sender)
                                         .Include(s => s.DataEntries)
                                         .FirstOrDefaultAsync(s => s.Id == Guid.Parse(session.Id));
@@ -83,23 +84,21 @@ public class SessionStore : ISessionStore
             var dataEntry = dbSession.DataEntries
                                      .FirstOrDefault(d => string.Equals(d.Key, key,
                                                                         StringComparison.OrdinalIgnoreCase));
-            if (dataEntry is not null) dataEntry.Value = value;
+            if (dataEntry is not null)
+            {
+                dataEntry = dataEntry with { Value = value };
+                _dbContext.Update(dataEntry);
+            }
             else
             {
-                dataEntry = new SessionDataEntry
-                {
-                    Key = key,
-                    Value = value,
-                    SessionId = dbSession.Id,
-                };
+                dataEntry = new SessionDataEntry(Guid.NewGuid(), dbSession.Id, key, value);
                 dbSession.DataEntries.Add(dataEntry);
             }
         }
 
         await _dbContext.SaveChangesAsync();
-        var dataDictionary = dbSession.DataEntries.ToDictionary(d => d.Key!, d => d.Value!);
-        return new MessagingSession(
-                                    dbSession.Id.ToString("N"),
+        var dataDictionary = dbSession.DataEntries.ToDictionary(d => d.Key, d => d.Value);
+        return new MessagingSession(dbSession.Id.ToString("N"),
                                     dbSession.Sender!.Key!,
                                     dbSession.Start,
                                     dataDictionary);
@@ -107,11 +106,11 @@ public class SessionStore : ISessionStore
 
     public async Task TerminateSession(ISession session)
     {
-        var dbSession = await _dbContext.Sessions
-                                        .FirstOrDefaultAsync(s => s.Id == Guid.Parse(session.Id));
-        if (dbSession is null) throw new InvalidOperationException("Session not found in database");
+        var updateTime = _dateTimeProvider.UtcNow;
+        var rows = await _dbContext.Sessions
+                                   .Where(s => s.Id == Guid.Parse(session.Id))
+                                   .ExecuteUpdateAsync(update => update.SetProperty(s => s.Terminated, updateTime));
 
-        dbSession.Terminated = _dateTimeProvider.UtcNow;
-        await _dbContext.SaveChangesAsync();
+        if (rows != 1) throw new InvalidOperationException("Session not found in database");
     }
 }

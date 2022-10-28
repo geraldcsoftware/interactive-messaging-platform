@@ -23,7 +23,7 @@ public class FieldRequestBuilder
 
     public FieldRequestBuilder WithPromptMessage(string promptMessage)
     {
-        _fieldRequest.PromtMessage = promptMessage;
+        _fieldRequest.PromptMessage = promptMessage;
         return this;
     }
 
@@ -45,8 +45,13 @@ public class FieldRequestBuilder
         var fieldKey = _fieldRequest.Key;
         if (!_sessionFieldStore.HasRequestedField(fieldKey))
         {
+            var promptMessage = _fieldRequest.PromptMessage;
+           
+            if (string.IsNullOrEmpty(promptMessage))
+                throw new ArgumentException("Prompt message cannot be null or empty", nameof(promptMessage));
+           
             await _sessionFieldStore.AddFieldRequestToSession(fieldKey);
-            var promptResponse = _sessionFieldStore.Prompt(_fieldRequest.PromtMessage);
+            var promptResponse = _sessionFieldStore.Prompt(promptMessage);
             return new(null, false, promptResponse);
         }
 

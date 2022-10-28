@@ -51,7 +51,7 @@ public class MessageProcessor : IMessageProcessor
             {
                 Body = "There was an error processing your request.",
                 Recipient = message.Sender,
-                SessionId = session?.Id,
+                SessionId = session?.Id ?? Guid.Empty.ToString(),
                 TerminateSession = true,
                 TimeSent = DateTimeOffset.UtcNow
             };

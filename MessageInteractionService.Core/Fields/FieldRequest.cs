@@ -5,7 +5,7 @@ public class FieldRequest
     private readonly IList<FieldValidationRule> _fieldValidationRules = new List<FieldValidationRule>();
     public required string Key { get; init; }
     public string Type { get; set; } = "Text";
-    public string PromtMessage { get; set; }
+    public string? PromptMessage { get; set; }
     public IReadOnlyCollection<FieldValidationRule> ValidationRules => _fieldValidationRules.AsReadOnly();
 
     public void AddValidationRule(FieldValidationRule rule)
