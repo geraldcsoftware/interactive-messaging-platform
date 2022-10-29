@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MessageInteractionService.Core.Sessions;
+using Microsoft.Extensions.Logging;
 
 namespace MessageInteractionService.Core;
 

@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using MessageInteractionService.Core.Fields;
-using MessageInteractionService.Core.Handlers;
 using MessageInteractionService.Core.Menu;
+using MessageInteractionService.Core.Sessions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MessageInteractionService.Core;
+namespace MessageInteractionService.Core.Handlers;
 
 public class HandlerFactory : IHandlerFactory
 {

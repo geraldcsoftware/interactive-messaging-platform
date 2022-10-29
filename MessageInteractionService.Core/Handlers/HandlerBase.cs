@@ -1,6 +1,7 @@
 ﻿using MessageInteractionService.Core.Input;
+using MessageInteractionService.Core.Sessions;
 
-namespace MessageInteractionService.Core;
+namespace MessageInteractionService.Core.Handlers;
 
 public abstract class HandlerBase : IMessageHandler
 {

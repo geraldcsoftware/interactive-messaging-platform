@@ -1,4 +1,4 @@
-﻿namespace MessageInteractionService.Core;
+﻿namespace MessageInteractionService.Core.Input;
 
 public enum InputType
 {

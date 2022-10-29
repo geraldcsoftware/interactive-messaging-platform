@@ -1,4 +1,5 @@
 ﻿using MessageInteractionService.Core;
+using MessageInteractionService.Core.Sessions;
 
 namespace MessageInteractionService.Storage;
 

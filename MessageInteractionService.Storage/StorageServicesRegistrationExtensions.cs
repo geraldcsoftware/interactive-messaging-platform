@@ -1,5 +1,6 @@
 ﻿using MessageInteractionService.Core;
 using MessageInteractionService.Core.Menu;
+using MessageInteractionService.Core.Sessions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

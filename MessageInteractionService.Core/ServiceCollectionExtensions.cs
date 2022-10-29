@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MessageInteractionService.Core.Handlers;
+using MessageInteractionService.Core.Sessions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MessageInteractionService.Core;
 

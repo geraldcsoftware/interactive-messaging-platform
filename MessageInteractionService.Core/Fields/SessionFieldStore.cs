@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using MessageInteractionService.Core.Sessions;
 
 namespace MessageInteractionService.Core.Fields;
 

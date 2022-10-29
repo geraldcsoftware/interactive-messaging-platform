@@ -1,4 +1,5 @@
 ﻿using MessageInteractionService.Core.Fields;
+using MessageInteractionService.Core.Sessions;
 
 namespace MessageInteractionService.Core.Handlers;
 

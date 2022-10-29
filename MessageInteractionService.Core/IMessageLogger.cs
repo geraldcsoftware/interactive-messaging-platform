@@ -1,4 +1,6 @@
-﻿namespace MessageInteractionService.Core;
+﻿using MessageInteractionService.Core.Sessions;
+
+namespace MessageInteractionService.Core;
 
 public interface IMessageLogger
 {

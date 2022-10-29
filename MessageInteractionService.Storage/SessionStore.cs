@@ -1,4 +1,5 @@
 ﻿using MessageInteractionService.Core;
+using MessageInteractionService.Core.Sessions;
 using MessageInteractionService.Storage.DbModels;
 using Microsoft.EntityFrameworkCore;
 
