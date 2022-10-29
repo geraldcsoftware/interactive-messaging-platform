@@ -38,10 +38,13 @@ public class ApplicationFactory : WebApplicationFactory<Api.Endpoints.ProcessInc
         try
         {
             using var connection = new NpgsqlConnection(_testContainer.ConnectionString);
-            using var command = new NpgsqlCommand();
             connection.Open();
-            command.Connection = connection;
-            command.CommandText = "SELECT 1";
+
+            using var command = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandText = "SELECT 1"
+            };
             var result = command.ExecuteReader();
             return result.Read();
         }
