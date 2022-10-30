@@ -8,16 +8,19 @@ public class MessageProcessor : IMessageProcessor
     private readonly ISessionFactory _sessionFactory;
     private readonly IHandlerFactory _handlerFactory;
     private readonly IMessageLogger _messageLogger;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ILogger<MessageProcessor> _logger;
 
     public MessageProcessor(ISessionFactory sessionFactory,
                             IHandlerFactory handlerFactory,
                             IMessageLogger messageLogger,
+                            IDateTimeProvider dateTimeProvider,
                             ILogger<MessageProcessor> logger)
     {
         _sessionFactory = sessionFactory;
         _handlerFactory = handlerFactory;
         _messageLogger = messageLogger;
+        _dateTimeProvider = dateTimeProvider;
         _logger = logger;
     }
 
@@ -54,7 +57,7 @@ public class MessageProcessor : IMessageProcessor
                 Recipient = message.Sender,
                 SessionId = session?.Id ?? Guid.Empty.ToString(),
                 TerminateSession = true,
-                TimeSent = DateTimeOffset.UtcNow
+                TimeSent = _dateTimeProvider.UtcNow
             };
         }
     }

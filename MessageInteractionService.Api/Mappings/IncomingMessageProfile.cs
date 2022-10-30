@@ -8,7 +8,7 @@ public class IncomingMessageProfile : Profile
     {
         CreateMap<Endpoints.Models.IncomingMessage, Core.IncomingMessage>()
            .ForMember(d => d.Body, o => o.MapFrom(src => src.Body))
-           .ForMember(d => d.ReceivedTime, o => o.MapFrom(src => src.Sent ?? DateTimeOffset.UtcNow))
+           .ForMember(d => d.ReceivedTime, o => o.MapFrom<IncomingMessageReceivedTimeValueResolver>())
            .ForMember(d => d.SessionId, o => o.Ignore());
     }
 }

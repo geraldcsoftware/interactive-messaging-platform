@@ -15,8 +15,8 @@ public class MessagingApiClient
         const string url = "api/messages";
         var body = $$"""
             {
-                "body": "{{ content}}",
-                "sender": "{{ sender}}",
+                "body": "{{content}}",
+                "sender": "{{sender}}",
                 "sent": "{{DateTimeOffset.UtcNow:o}}"
             }    
         """ ;

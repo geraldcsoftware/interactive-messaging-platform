@@ -1,6 +1,7 @@
 ﻿using MessageInteractionService.Core.Handlers;
 using MessageInteractionService.Core.Sessions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MessageInteractionService.Core;
 
@@ -13,7 +14,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMessageProcessor, MessageProcessor>()
                 .AddScoped<IHandlerFactory, HandlerFactory>()
                 .AddScoped<ISessionFactory, SessionFactory>()
-                .AddTransient<IDateTimeProvider, Clock>();
+                .TryAddTransient<IDateTimeProvider, Clock>();
 
         return services;
     }
