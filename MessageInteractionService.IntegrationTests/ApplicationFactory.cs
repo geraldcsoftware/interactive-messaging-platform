@@ -1,6 +1,4 @@
 using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
 using MessageInteractionService.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -8,27 +6,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using Testcontainers.PostgreSql;
 
 namespace MessageInteractionService.IntegrationTests;
 
 public class ApplicationFactory : WebApplicationFactory<Api.Endpoints.ProcessIncomingMessageEndpoint>,
                                   IAsyncLifetime
 {
-    private readonly PostgreSqlTestcontainer _testContainer;
+    private readonly PostgreSqlContainer _testContainer;
 
     public ApplicationFactory()
     {
-        var dbConfiguration = new PostgreSqlTestcontainerConfiguration
-        {
-            Database = "MessagingApp.Tests",
-            Username = "postgres",
-            Password = "postgres"
-        };
         var waitStrategy = Wait.ForUnixContainer()
                                .UntilOperationIsSucceeded(CheckDatabaseAvailability, 10);
 
-        _testContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
-                        .WithDatabase(dbConfiguration)
+        _testContainer = new PostgreSqlBuilder()
+                        .WithDatabase("MessagingApp.Tests")
+                        .WithUsername("postgres")
+                        .WithPassword("postgres")
                         .WithWaitStrategy(waitStrategy)
                         .Build();
     }
@@ -37,7 +32,7 @@ public class ApplicationFactory : WebApplicationFactory<Api.Endpoints.ProcessInc
     {
         try
         {
-            using var connection = new NpgsqlConnection(_testContainer.ConnectionString);
+            using var connection = new NpgsqlConnection(_testContainer.GetConnectionString());
             connection.Open();
 
             using var command = new NpgsqlCommand
@@ -61,14 +56,14 @@ public class ApplicationFactory : WebApplicationFactory<Api.Endpoints.ProcessInc
         {
             configuration.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                { "ConnectionStrings:StorageConnection", _testContainer.ConnectionString }
+                { "ConnectionStrings:StorageConnection", _testContainer.GetConnectionString() }
             });
         });
     }
 
     public string GetConnectionString()
     {
-        return _testContainer.ConnectionString;
+        return _testContainer.GetConnectionString();
     }
 
     public async Task InitializeAsync()
