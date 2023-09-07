@@ -4,6 +4,7 @@ using MessageInteractionService.Core;
 using MessageInteractionService.Storage;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Settings.Configuration;
 using Serilog.Templates;
 
 const string logTemplate =
@@ -17,7 +18,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, config) =>
 {
     var expressionTemplate = new ExpressionTemplate(logTemplate);
-    config.ReadFrom.Configuration(context.Configuration, "Logging");
+    config.ReadFrom.Configuration(context.Configuration, new ConfigurationReaderOptions
+                                                         {
+                                                             SectionName = "Logging"
+                                                         });
     config.WriteTo.Console(expressionTemplate);
 });
 
@@ -27,10 +31,7 @@ builder.Services.AddFastEndpoints();
 builder.Services.AddMapper();
 
 builder.Services.AddMessageInteractionCoreServices()
-       .AddMessageInteractionStorageServices(options =>
-        {
-            options.UseNpgsql(builder.Configuration.GetConnectionString("StorageConnection"));
-        });
+       .AddMessageInteractionStorageServices(options => options.UseNpgsql(builder.Configuration.GetConnectionString("StorageConnection")));
 
 var app = builder.Build();
 
